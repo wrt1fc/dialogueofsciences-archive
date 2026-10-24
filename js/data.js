@@ -18,9 +18,9 @@ const ISSUES = {
   '2026-01':{y:2026,n:1,vol:9,date:{ru:`15.03.2026`,en:`15 Mar 2026`}},
   '2025-01':{y:2025,n:1,vol:8,date:{ru:`12.09.2025`,en:`12 Sep 2025`}},
   '2024-01':{y:2024,n:1,vol:7,date:null},
-  'works-2023':{y:2023,n:null,vol:null,date:null,collection:true},
-  'works-2022':{y:2022,n:null,vol:null,date:null,collection:true},
-  'works-2021':{y:2021,n:null,vol:null,date:null,collection:true}
+  'works-2023':{y:2023,n:1,vol:null,date:null,collection:true},
+  'works-2022':{y:2022,n:1,vol:null,date:null,collection:true},
+  'works-2021':{y:2021,n:1,vol:null,date:null,collection:true}
 };
 
 /* ── СТАТЬИ ── */
@@ -354,40 +354,45 @@ const ARCHIVE_DETAILS = {
 
 /* Годовые подборки работ из разных изданий. */
 const archiveYearCounts={};
+const archiveEnglishOriginals=new Set([
+  'Art240.pdf',
+  'Recent_Investigations_on_the_Functional_Role_of_Ce.pdf',
+  'elibrary_50764302_13936898.pdf'
+]);
 const ARCHIVE_DOCUMENTS = [
- [2021,'Art240.pdf','sport',"Adaptation of the training process of highly qualified women's basketball teams based on indicators of competitive intensity and calorie consumption during official games"],
- [2021,'elibrary_44835805_29184548.pdf','pe','Отношение студентов к формированию личной двигательной активности'],
- [2021,'elibrary_45563963_21731698.pdf','health','Эффективная профилактика детского дорожно-транспортного травматизма на примере деятельности центра дополнительного образования для детей города Нижнекамска'],
- [2021,'elibrary_45711029_18054025.pdf','sport','Спортивные игры как средство и метод развития двигательных способностей юных волейболистов'],
- [2021,'elibrary_45711030_15553262.pdf','digital','Формирование цифровой образовательной среды образовательной организации в контексте внедрения информационно-компьютерных технологий'],
- [2021,'elibrary_45711037_82093331.pdf','pe','Средства массовой коммуникации как основа формирования мотивации у школьников к занятиям физической культурой'],
- [2021,'elibrary_45796265_92011239.pdf','sport','Российская фитнес-индустрия в контексте изменений, связанных с пандемией COVID-19'],
- [2021,'elibrary_46273814_87064645.pdf','sport','Влияние подвижных и спортивных игр на скоростно-силовую выносливость волейболистов'],
- [2021,'elibrary_46273815_96429116.pdf','digital','Внедрение информационных технологий в методологию физического воспитания студентов'],
- [2021,'elibrary_47236180_12928903.pdf','sport','Анализ показателей физического и функционального состояния молодых баскетболистов на основе информационных технологий в условиях пандемии COVID-19'],
- [2021,'elibrary_47435468_76991555.pdf','digital','Программная система для интегральной оценки физического здоровья школьников — свидетельство № 2021680080'],
- [2021,'elibrary_47573014_44606606.pdf','pe','Корреляция сдачи населением норм Всероссийского физкультурно-спортивного комплекса «Готов к труду и обороне» и важнейших показателей социального развития страны'],
- [2021,'elibrary_47573025_44432198.pdf','sport','Фитнес-индустрия России: факторы развития кризиса и актуальные перспективы выхода из него'],
- [2021,'finansovyy-mehanizm-upravleniya-professionalnym-sportom.pdf','sport','Финансовый механизм управления профессиональным спортом'],
- [2022,'elibrary_48337026_94576547.pdf','digital','Современные информационные технологии в процессе подготовки спортсменов высшей квалификации'],
- [2022,'elibrary_49162295_67916848.pdf','sport','Интенсификация тренировочного процесса молодых баскетболисток на основе дифференцированного подхода к выбору интенсивности соревновательных нагрузок'],
- [2022,'elibrary_49392482_76501290.pdf','sport','Оптимизация воспитания скоростно-силовых качеств молодых волейболистов на основе применения SMART-подвижных игр'],
- [2022,'elibrary_49799003_88657662.pdf','psy','Методы информационных технологий в психодиагностике спортсменов'],
- [2022,'Recent_Investigations_on_the_Functional_Role_of_Ce.pdf','health','Recent Investigations on the Functional Role of Cerebellar Neural Networks in Motor Functions & Nonmotor Functions -Neurodegeneration'],
- [2023,'elibrary_50764302_13936898.pdf','sport','Limiting factors of investment activity of the sports industry on the example of international football competitions in Russia'],
- [2023,'elibrary_53325349_39761636.pdf','digital','Влияние информационно-компьютерных технологий на изменение образовательной среды'],
- [2023,'elibrary_53325350_48394143.pdf','digital','Цифровые образовательные ресурсы в преподавании физкультуры: возможности и преимущества'],
- [2023,'elibrary_54328291_28927743.pdf','digital','Применение современных технологий в обучении: возможности и преимущества'],
- [2023,'МСФ №5 2023-104.pdf','sport','Оптимизация физической подготовки девочек-волейболистов в условиях дополнительного образования'],
- [2023,'№5 2023 СПрО-65.pdf','pe','Развитие гибкости у детей среднего школьного возраста в условиях дополнительного образования']
-].map(([y,file,topic,title])=>{
+ [2021,'Art240.pdf','sport','Адаптация тренировочного процесса женских баскетбольных команд высокой квалификации на основе показателей соревновательной интенсивности и расхода калорий во время официальных игр',"Adaptation of the training process of highly qualified women's basketball teams based on indicators of competitive intensity and calorie consumption during official games"],
+ [2021,'elibrary_44835805_29184548.pdf','pe','Отношение студентов к формированию личной двигательной активности','Students’ attitudes towards developing their own physical activity'],
+ [2021,'elibrary_45563963_21731698.pdf','health','Эффективная профилактика детского дорожно-транспортного травматизма на примере деятельности центра дополнительного образования для детей города Нижнекамска','Effective prevention of child road traffic injuries: the case of a supplementary education centre in Nizhnekamsk'],
+ [2021,'elibrary_45711029_18054025.pdf','sport','Спортивные игры как средство и метод развития двигательных способностей юных волейболистов','Sports games as a means and method of developing young volleyball players’ motor abilities'],
+ [2021,'elibrary_45711030_15553262.pdf','digital','Формирование цифровой образовательной среды образовательной организации в контексте внедрения информационно-компьютерных технологий','Creating a digital learning environment through the introduction of information and computer technologies'],
+ [2021,'elibrary_45711037_82093331.pdf','pe','Средства массовой коммуникации как основа формирования мотивации у школьников к занятиям физической культурой','Mass media as a basis for motivating schoolchildren to participate in physical education'],
+ [2021,'elibrary_45796265_92011239.pdf','sport','Российская фитнес-индустрия в контексте изменений, связанных с пандемией COVID-19','The Russian fitness industry amid changes caused by the COVID-19 pandemic'],
+ [2021,'elibrary_46273814_87064645.pdf','sport','Влияние подвижных и спортивных игр на скоростно-силовую выносливость волейболистов','The effect of active and sports games on volleyball players’ speed-strength endurance'],
+ [2021,'elibrary_46273815_96429116.pdf','digital','Внедрение информационных технологий в методологию физического воспитания студентов','Integrating information technologies into university physical education methods'],
+ [2021,'elibrary_47236180_12928903.pdf','sport','Анализ показателей физического и функционального состояния молодых баскетболистов на основе информационных технологий в условиях пандемии COVID-19','Analysis of young basketball players’ physical and functional condition using information technologies during the COVID-19 pandemic'],
+ [2021,'elibrary_47435468_76991555.pdf','digital','Программная система для интегральной оценки физического здоровья школьников — свидетельство № 2021680080','Software system for an integrated assessment of schoolchildren’s physical health — registration certificate No. 2021680080'],
+ [2021,'elibrary_47573014_44606606.pdf','pe','Корреляция сдачи населением норм Всероссийского физкультурно-спортивного комплекса «Готов к труду и обороне» и важнейших показателей социального развития страны','Correlation between participation in Russia’s Ready for Labour and Defence fitness programme and key indicators of social development'],
+ [2021,'elibrary_47573025_44432198.pdf','sport','Фитнес-индустрия России: факторы развития кризиса и актуальные перспективы выхода из него','Russia’s fitness industry: factors behind the crisis and prospects for recovery'],
+ [2021,'finansovyy-mehanizm-upravleniya-professionalnym-sportom.pdf','sport','Финансовый механизм управления профессиональным спортом','Financial mechanisms for managing professional sports'],
+ [2022,'elibrary_48337026_94576547.pdf','digital','Современные информационные технологии в процессе подготовки спортсменов высшей квалификации','Modern information technologies in training elite athletes'],
+ [2022,'elibrary_49162295_67916848.pdf','sport','Интенсификация тренировочного процесса молодых баскетболисток на основе дифференцированного подхода к выбору интенсивности соревновательных нагрузок','Intensifying young women’s basketball training through a differentiated approach to competitive load intensity'],
+ [2022,'elibrary_49392482_76501290.pdf','sport','Оптимизация воспитания скоростно-силовых качеств молодых волейболистов на основе применения SMART-подвижных игр','Developing young volleyball players’ speed-strength qualities through SMART active games'],
+ [2022,'elibrary_49799003_88657662.pdf','psy','Методы информационных технологий в психодиагностике спортсменов','Information technology methods in athletes’ psychological assessment'],
+ [2022,'Recent_Investigations_on_the_Functional_Role_of_Ce.pdf','health','Современные исследования роли нейронных сетей мозжечка в двигательных и недвигательных функциях и нейродегенерации','Recent Investigations on the Functional Role of Cerebellar Neural Networks in Motor Functions & Nonmotor Functions -Neurodegeneration'],
+ [2023,'elibrary_50764302_13936898.pdf','sport','Факторы, ограничивающие инвестиционную активность спортивной индустрии на примере международных футбольных соревнований в России','Limiting factors of investment activity of the sports industry on the example of international football competitions in Russia'],
+ [2023,'elibrary_53325349_39761636.pdf','digital','Влияние информационно-компьютерных технологий на изменение образовательной среды','The impact of information and computer technologies on changes in the learning environment'],
+ [2023,'elibrary_53325350_48394143.pdf','digital','Цифровые образовательные ресурсы в преподавании физкультуры: возможности и преимущества','Digital learning resources in physical education: opportunities and advantages'],
+ [2023,'elibrary_54328291_28927743.pdf','digital','Применение современных технологий в обучении: возможности и преимущества','Modern technologies in teaching: opportunities and advantages'],
+ [2023,'МСФ №5 2023-104.pdf','sport','Оптимизация физической подготовки девочек-волейболистов в условиях дополнительного образования','Optimising the physical training of girls playing volleyball in supplementary education'],
+ [2023,'№5 2023 СПрО-65.pdf','pe','Развитие гибкости у детей среднего школьного возраста в условиях дополнительного образования','Developing flexibility in middle-school children through supplementary education']
+].map(([y,file,topic,ruTitle,enTitle])=>{
   const m=ARCHIVE_DETAILS[file];
   const position=archiveYearCounts[y]=(archiveYearCounts[y]||0)+1;
   const id=`d${String(y).slice(-2)}-${String(position).padStart(2,'0')}`;
-  return {id,y,file,topic,issue:`works-${y}`,external:true,pdf:`${y}/${file}`,img:`img/prev/${id}.jpg`,authors:m.authors,np:m.np,pages:m.pages||null,doi:m.doi,cites:null,
+  return {id,y,file,topic,issue:`works-${y}`,external:true,originalTitle:archiveEnglishOriginals.has(file)?enTitle:ruTitle,pdf:`${y}/${file}`,img:`img/prev/${id}.jpg`,authors:m.authors,np:m.np,pages:m.pages||null,doi:m.doi,cites:null,
     registration:m.registration,
     src:{ru:m.journal||'Выходные данные — в оригинальном PDF',en:m.journal||'Publication details are in the original PDF',jr:m.journal,je:m.journal,vol:m.volume,iss:m.number},
-    ru:{t:title,a:m.ru,k:[TOPICS[topic].ru]},en:{t:title,a:m.en,k:[TOPICS[topic].en]}};
+    ru:{t:ruTitle,a:m.ru,k:[TOPICS[topic].ru]},en:{t:enTitle,a:m.en,k:[TOPICS[topic].en]}};
 });
 ARTICLES.push(...ARCHIVE_DOCUMENTS);
 
@@ -449,8 +454,7 @@ const I18N = {
   't.subscriptionUnavailable':'Подписка пока недоступна: сервис рассылки не подключён.',
   't.channelUnavailable':'Этот канал уведомлений пока не подключён.',
   'sub.localOnly':'Файл выбран на устройстве, но не отправлен: приём рукописей пока не подключён.',
-  'arch.collection':'Подборка работ','arch.collectionShort':'Работы',
-  'arch.collectionNote':'Материалы разных изданий. Названия на языке оригинала, краткие описания составлены по PDF. Полные выходные данные — в документах.',
+  'arch.collectionNote':'Материалы разных изданий. Названия переведены для просмотра; оригинальные названия и полные выходные данные — в документах.',
   'pl.document':'документ|документа|документов',
   'title':'Горизонты: Диалог наук — научный журнал. Том 8, № 1, 2025',
   'nav.issue':'Выпуск','nav.areas':'Области','nav.metrics':'Метрики','nav.feat':'Статьи','nav.board':'Редакция','nav.authors':'Авторам','nav.archive':'Архив','nav.submit':'Подать статью',
@@ -511,8 +515,7 @@ const I18N = {
   't.subscriptionUnavailable':'Subscriptions are unavailable: the mailing service is not connected yet.',
   't.channelUnavailable':'This notification channel is not connected yet.',
   'sub.localOnly':'File selected on your device, but not sent: manuscript submission is not connected yet.',
-  'arch.collection':'Collection of works','arch.collectionShort':'Works',
-  'arch.collectionNote':'Materials from different publications. Titles remain in the original language; short descriptions are based on the PDFs. Full publication details are in the documents.',
+  'arch.collectionNote':'Materials from different publications. Titles are translated for browsing; original titles and full publication details are in the documents.',
   'pl.document':'document|documents|documents',
   'title':'Horizons: Dialogue of Sciences — scientific journal. Vol. 8, No. 1, 2025',
   'nav.issue':'Issue','nav.areas':'Domains','nav.metrics':'Metrics','nav.feat':'Articles','nav.board':'Board','nav.authors':'Authors','nav.archive':'Archive','nav.submit':'Submit',

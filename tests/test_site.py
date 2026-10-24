@@ -111,12 +111,36 @@ class BrowserTests(unittest.TestCase):
             for year, count in ((2021, 14), (2022, 5), (2023, 6)):
                 with self.subTest(language=language, year=year):
                     self.page.locator(f'#yearsList [data-y="{year}"]').evaluate("e => e.click()")
+                    self.assertEqual(
+                        self.page.locator(f'#shelf [data-i="works-{year}"] .sn').inner_text(),
+                        "№1" if language == "ru" else "No.1",
+                    )
+                    self.assertIn("1", self.page.locator("#issuePanel .ip-head h4").inner_text())
+                    self.assertNotIn("null", self.page.locator("#issuePanel").inner_text())
                     rows = self.page.locator("#issuePanel button.ip-row")
                     self.assertEqual(rows.count(), count)
                     rows.first.click()
                     self.assertTrue(self.page.locator("#pdfOpen").get_attribute("href").startswith(f"{year}/"))
                     self.assertTrue(self.page.locator("#pdfBody .pdf-authors").inner_text())
                     self.page.locator("#pdfClose").click()
+
+    def test_all_archive_titles_are_translated_in_both_languages(self):
+        titles = self.page.evaluate("""() => ARTICLES.filter(a => a.external).map(a => ({
+            id:a.id, ru:a.ru.t, en:a.en.t
+        }))""")
+        self.assertEqual(len(titles), 25)
+        for article in titles:
+            with self.subTest(article=article["id"]):
+                self.assertRegex(article["ru"], "[А-Яа-яЁё]")
+                self.assertNotRegex(article["en"], "[А-Яа-яЁё]")
+                self.assertNotEqual(article["ru"], article["en"])
+        self.page.evaluate("archKey='works-2021'; renderArchive(); setLang('en')")
+        self.assertIn("Students’ attitudes", self.page.locator("#issuePanel .ip-title").nth(1).inner_text())
+        self.page.evaluate("openSearch(); renderSearch('students’ attitudes')")
+        self.assertEqual(self.page.locator("#searchResults button.sr-item").count(), 1)
+        citation = self.page.evaluate("apaCite(byId('d21-02'))")
+        self.assertIn("Отношение студентов к формированию", citation)
+        self.assertNotIn("Students’ attitudes", citation)
 
     def test_older_documents_are_searchable(self):
         self.page.evaluate("openSearch(); renderSearch('elibrary_49799003')")

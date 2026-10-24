@@ -67,7 +67,7 @@ const artKw=a=>L(a).k.join(', ');
 const authorsOf=a=>LANG==='en'?a.authors.map(translit):a.authors;
 const authorsStr=a=>authorsOf(a).join(', ');
 const isoIssue=a=>ISSUES[a.issue];
-const issueLabel=a=>{const i=isoIssue(a);return `${i.y} · ${i.collection?t('arch.collection'):t('no')+i.n}`};
+const issueLabel=a=>{const i=isoIssue(a);return `${i.y} · ${t('no')} ${i.n}`};
 const readMin=a=>Math.max(4,a.np*2);
 const idLabel=a=>a.doi?`DOI ${a.doi}`:a.edn?`EDN ${a.edn}`:a.registration?`№ ${a.registration}`:'PDF';
 const idShort=a=>a.doi?`DOI ${a.doi.slice(-4)}`:idLabel(a);
@@ -82,7 +82,7 @@ function srcLine(a){
 }
 function apaCite(a){
   const i=isoIssue(a),A=authorsStr(a),T=artTitle(a),en=LANG==='en';
-  if(a.external)return `${A} (${i.y}). ${T}. ${srcLine(a)}${a.src.vol?', '+a.src.vol:''}${a.src.iss?', '+a.src.iss:''}${a.pages?', '+a.pages:''}. ${a.doi?'https://doi.org/'+a.doi:new URL(a.pdf,location.href).href}`;
+  if(a.external)return `${A} (${i.y}). ${a.originalTitle}. ${srcLine(a)}${a.src.vol?', '+a.src.vol:''}${a.src.iss?', '+a.src.iss:''}${a.pages?', '+a.pages:''}. ${a.doi?'https://doi.org/'+a.doi:new URL(a.pdf,location.href).href}`;
   if(a.doi)return `${A} (${i.y}). ${T}. ${JOURNAL[LANG]}, ${i.vol}(${i.n}), ${a.pages}. https://doi.org/${a.doi}`;
   if(a.conf)return `${A} (${i.y}). ${T}. ${en?'In':'В сб.:'} ${L(a.src)} ${en?'pp.':'С.'} ${a.pages}. EDN ${a.edn}`;
   const s=a.src,j=en?s.je:s.jr;
@@ -92,7 +92,7 @@ function apaCite(a){
 function bibTeX(a){
   const i=isoIssue(a),au=authorsOf(a).join(' and ');
   if(a.external){
-    const fields={author:au,title:artTitle(a),year:i.y,journal:a.src.jr,volume:a.src.vol,number:a.src.iss,pages:a.pages,doi:a.doi,url:new URL(a.pdf,location.href).href};
+    const fields={author:au,title:a.originalTitle,year:i.y,journal:a.src.jr,volume:a.src.vol,number:a.src.iss,pages:a.pages,doi:a.doi,url:new URL(a.pdf,location.href).href};
     return `@${a.src.jr?'article':'misc'}{${a.id}${i.y},\n`+Object.entries(fields).filter(([,v])=>v!=null).map(([k,v])=>`  ${k} = {${v}}`).join(',\n')+'\n}';
   }
   if(a.doi)return `@article{${a.id}${i.y},\n  author  = {${au}},\n  title   = {${artTitle(a)}},\n  journal = {${JOURNAL[LANG]}},\n  year    = {${i.y}},\n  volume  = {${i.vol}},\n  number  = {${i.n}},\n  pages   = {${a.pages}},\n  doi     = {${a.doi}}\n}`;
@@ -103,7 +103,7 @@ function bibTeX(a){
 function risRec(a){
   if(a.external){
     const [sp,ep]=(a.pages||'').split('–');
-    const fields=[['TY',a.src.jr?'JOUR':'GEN'],...authorsOf(a).map(author=>['AU',author]),['TI',artTitle(a)],['JO',a.src.jr],['PY',isoIssue(a).y],['VL',a.src.vol],['IS',a.src.iss],['SP',sp],['EP',ep||sp],['DO',a.doi],['UR',new URL(a.pdf,location.href).href]];
+    const fields=[['TY',a.src.jr?'JOUR':'GEN'],...authorsOf(a).map(author=>['AU',author]),['TI',a.originalTitle],['JO',a.src.jr],['PY',isoIssue(a).y],['VL',a.src.vol],['IS',a.src.iss],['SP',sp],['EP',ep||sp],['DO',a.doi],['UR',new URL(a.pdf,location.href).href]];
     return fields.filter(([,v])=>v!=null&&v!=='').map(([key,value])=>`${key}  - ${value}`).join('\n')+'\nER  - ';
   }
   const i=isoIssue(a),[sp,ep]=a.pages.split('–');
@@ -676,8 +676,8 @@ function renderArchive(){
   const sorted=[...recs].sort((a,b)=>archSort==='year'?b.y-a.y||b.n-a.n:b.c-a.c||b.y-a.y);
   $('#shelf').innerHTML=sorted.map(is=>{
     const has=archTopic==='all'||is.arts.some(a=>a.topic===archTopic);
-    return `<button class="spine ${has?'':'dim'} ${is.key===archKey?'sel':''}" data-i="${is.key}" aria-label="${is.y} ${is.collection?t('arch.collection'):t('no')+is.n}" style="--c:${topicCol(is.main)};width:${64+is.c*2}px">
-      <span class="sn">${is.collection?t('arch.collectionShort'):t('no')+is.n}</span><span class="sy">${is.y} · ${is.c}</span>
+    return `<button class="spine ${has?'':'dim'} ${is.key===archKey?'sel':''}" data-i="${is.key}" aria-label="${is.y} ${t('no')} ${is.n}" style="--c:${topicCol(is.main)};width:${64+is.c*2}px">
+      <span class="sn">${t('no')}${is.n}</span><span class="sy">${is.y} · ${is.c}</span>
     </button>`;
   }).join('');
   $$('#shelf .spine').forEach(b=>b.onclick=()=>{archKey=b.dataset.i;renderArchive()});
@@ -695,7 +695,7 @@ function renderIssuePanel(is){
     </button>`;
   }).join('');
   $('#issuePanel').innerHTML=`
-    <div class="ip-head"><h4>${is.y} · ${is.collection?t('arch.collection'):`${t('no')} ${is.n} <span style="color:var(--muted);font-weight:500">(${t('vol')} ${is.vol})</span>`}</h4>
+    <div class="ip-head"><h4>${is.y} · ${t('no')} ${is.n}${is.collection?'':` <span style="color:var(--muted);font-weight:500">(${t('vol')} ${is.vol})</span>`}</h4>
       <span class="mono">${is.c} ${pl(is.c,is.collection?'pl.document':'pl.article')}${is.date?` · ${t('issue.pub')} ${is.date[LANG]}`:''}</span></div>
     ${is.collection?`<p class="collection-note">${t('arch.collectionNote')}</p>`:''}
     <div class="ip-list">${rows}</div>`;
@@ -747,7 +747,7 @@ function openPdf(a,refresh=false){
   pdfArt=a;if(!refresh)lastFocus=document.activeElement;
   const i=isoIssue(a);
   $('#pdfBody').innerHTML=`
-    <div class="p-kick">${i.collection?t('arch.collection').toUpperCase():`${JOURNAL[LANG].toUpperCase()} · ${t('vol').toUpperCase()} ${i.vol} · ${t('no')} ${i.n}`} · ${i.y} · ${pagesLabel(a).toUpperCase()}</div>
+    <div class="p-kick">${i.collection?`${t('no')} ${i.n}`:`${JOURNAL[LANG].toUpperCase()} · ${t('vol').toUpperCase()} ${i.vol} · ${t('no')} ${i.n}`} · ${i.y} · ${pagesLabel(a).toUpperCase()}</div>
     <h3>${artTitle(a)}</h3>
     <div class="pdf-authors">${authorsStr(a)}</div>
     <div class="pdf-meta"><span class="tag" style="--c:${topicCol(a.topic)}">${TOPICS[a.topic][LANG]}</span><span>${t('pdf.src')}: ${srcLine(a)}</span></div>
