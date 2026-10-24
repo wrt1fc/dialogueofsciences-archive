@@ -539,6 +539,7 @@ section{padding:96px 0 90px;border-top:1px solid var(--line);position:relative}
 .ip-row{display:flex;gap:14px;align-items:center;width:100%;text-align:left;padding:10px 0;border-bottom:1px dashed var(--line);font-size:13.5px;transition:background .2s}
 .ip-row:hover{background:var(--surface)}
 .ip-row.dim{opacity:.35}
+.collection-note{font-size:13px;color:var(--muted);margin:12px 0;line-height:1.6}
 .ip-row .pthumb.mini{width:34px;height:46px}
 .ip-t{min-width:0;flex:1}
 .ip-title{display:block;font-weight:600;line-height:1.35}

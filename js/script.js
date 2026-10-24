@@ -29,15 +29,24 @@ const translit=s=>s.replace(/[А-Яа-яЁё]/g,ch=>{const lo=ch.toLowerCase(),r
 function toast(msg,type='ok'){
   const d=document.createElement('div');
   d.className='toast '+type;
-  d.innerHTML=`<svg><use href="#i-${type==='warn'?'x':'check'}"/></svg><span>${msg}</span>`;
+  d.innerHTML=`<svg><use href="#i-${type==='warn'?'x':'check'}"/></svg><span></span>`;
+  d.querySelector('span').textContent=msg;
   $('#toasts').appendChild(d);
   setTimeout(()=>{d.classList.add('out');setTimeout(()=>d.remove(),320)},3400);
 }
-function copyText(str){
-  if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(str).catch(()=>{});
+async function copyText(str){
+  if(navigator.clipboard&&window.isSecureContext){
+    try{await navigator.clipboard.writeText(str);return}catch(e){/* Try the legacy copy path. */}
+  }
   const ta=document.createElement('textarea');ta.value=str;ta.style.cssText='position:fixed;opacity:0';
-  document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}ta.remove();
-  return Promise.resolve();
+  const focus=document.activeElement;
+  document.body.appendChild(ta);ta.select();
+  try{if(!document.execCommand('copy'))throw new Error('Copy unavailable')}
+  finally{ta.remove();if(focus&&focus.focus)focus.focus()}
+}
+async function copyWithFeedback(str,btn,msg){
+  try{await copyText(str);ripple(btn);toast(msg)}
+  catch(e){toast(t('t.copyFailed'),'warn')}
 }
 function ripple(btn){btn.classList.remove('rip');void btn.offsetWidth;btn.classList.add('rip')}
 function countUp(el,to,dur=1300,fmt=v=>Math.round(v).toLocaleString('ru-RU')){
@@ -58,12 +67,12 @@ const artKw=a=>L(a).k.join(', ');
 const authorsOf=a=>LANG==='en'?a.authors.map(translit):a.authors;
 const authorsStr=a=>authorsOf(a).join(', ');
 const isoIssue=a=>ISSUES[a.issue];
-const issueLabel=a=>{const i=isoIssue(a);return `${i.y} · ${t('no')}${i.n}`};
+const issueLabel=a=>{const i=isoIssue(a);return `${i.y} · ${i.collection?t('arch.collection'):t('no')+i.n}`};
 const readMin=a=>Math.max(4,a.np*2);
-const idLabel=a=>a.doi?`DOI ${a.doi}`:`EDN ${a.edn}`;
-const idShort=a=>a.doi?`DOI ${a.doi.slice(-4)}`:`EDN ${a.edn}`;
-const idCopy=a=>a.doi?'https://doi.org/'+a.doi:'EDN '+a.edn;
-const pagesLabel=a=>`${t('pp')} ${a.pages}`;
+const idLabel=a=>a.doi?`DOI ${a.doi}`:a.edn?`EDN ${a.edn}`:a.registration?`№ ${a.registration}`:'PDF';
+const idShort=a=>a.doi?`DOI ${a.doi.slice(-4)}`:idLabel(a);
+const idCopy=a=>a.doi?'https://doi.org/'+a.doi:a.edn?'EDN '+a.edn:new URL(a.pdf,location.href).href;
+const pagesLabel=a=>a.pages?`${t('pp')} ${a.pages}`:`${a.np} ${t('pdf.pages')}`;
 const topicCol=k=>cssVar(TOPICS[k].cv);
 const JOURNAL={ru:'Горизонты: Диалог наук',en:'Horizons: Dialogue of Sciences'};
 function srcLine(a){
@@ -73,6 +82,7 @@ function srcLine(a){
 }
 function apaCite(a){
   const i=isoIssue(a),A=authorsStr(a),T=artTitle(a),en=LANG==='en';
+  if(a.external)return `${A} (${i.y}). ${T}. ${srcLine(a)}${a.src.vol?', '+a.src.vol:''}${a.src.iss?', '+a.src.iss:''}${a.pages?', '+a.pages:''}. ${a.doi?'https://doi.org/'+a.doi:new URL(a.pdf,location.href).href}`;
   if(a.doi)return `${A} (${i.y}). ${T}. ${JOURNAL[LANG]}, ${i.vol}(${i.n}), ${a.pages}. https://doi.org/${a.doi}`;
   if(a.conf)return `${A} (${i.y}). ${T}. ${en?'In':'В сб.:'} ${L(a.src)} ${en?'pp.':'С.'} ${a.pages}. EDN ${a.edn}`;
   const s=a.src,j=en?s.je:s.jr;
@@ -81,12 +91,21 @@ function apaCite(a){
 }
 function bibTeX(a){
   const i=isoIssue(a),au=authorsOf(a).join(' and ');
+  if(a.external){
+    const fields={author:au,title:artTitle(a),year:i.y,journal:a.src.jr,volume:a.src.vol,number:a.src.iss,pages:a.pages,doi:a.doi,url:new URL(a.pdf,location.href).href};
+    return `@${a.src.jr?'article':'misc'}{${a.id}${i.y},\n`+Object.entries(fields).filter(([,v])=>v!=null).map(([k,v])=>`  ${k} = {${v}}`).join(',\n')+'\n}';
+  }
   if(a.doi)return `@article{${a.id}${i.y},\n  author  = {${au}},\n  title   = {${artTitle(a)}},\n  journal = {${JOURNAL[LANG]}},\n  year    = {${i.y}},\n  volume  = {${i.vol}},\n  number  = {${i.n}},\n  pages   = {${a.pages}},\n  doi     = {${a.doi}}\n}`;
   if(a.conf)return `@inproceedings{${a.id}${i.y},\n  author    = {${au}},\n  title     = {${artTitle(a)}},\n  booktitle = {${LANG==='en'?a.src.je:a.src.jr}},\n  publisher = {${LANG==='en'?a.src.pube:a.src.pub}},\n  address   = {${LANG==='en'?a.src.citye:a.src.city}},\n  year      = {${i.y}},\n  pages     = {${a.pages}},\n  note      = {EDN ${a.edn}}\n}`;
   const s=a.src;
   return `@article{${a.id}${i.y},\n  author  = {${au}},\n  title   = {${artTitle(a)}},\n  journal = {${LANG==='en'?s.je:s.jr}},\n  year    = {${i.y}},${s.vol?`\n  volume  = {${s.vol}},`:''}\n  number  = {${s.iss}},\n  pages   = {${a.pages}},\n  note    = {EDN ${a.edn}}\n}`;
 }
 function risRec(a){
+  if(a.external){
+    const [sp,ep]=(a.pages||'').split('–');
+    const fields=[['TY',a.src.jr?'JOUR':'GEN'],...authorsOf(a).map(author=>['AU',author]),['TI',artTitle(a)],['JO',a.src.jr],['PY',isoIssue(a).y],['VL',a.src.vol],['IS',a.src.iss],['SP',sp],['EP',ep||sp],['DO',a.doi],['UR',new URL(a.pdf,location.href).href]];
+    return fields.filter(([,v])=>v!=null&&v!=='').map(([key,value])=>`${key}  - ${value}`).join('\n')+'\nER  - ';
+  }
   const i=isoIssue(a),[sp,ep]=a.pages.split('–');
   const au=authorsOf(a).map(x=>`AU  - ${x}`).join('\n');
   const jr=a.doi?JOURNAL[LANG]:(a.conf?(LANG==='en'?a.src.je:a.src.jr):(LANG==='en'?a.src.je:a.src.jr));
@@ -384,10 +403,10 @@ function renderToC(){
     e.stopPropagation();
     const a=byId(b.dataset.a),f=b.dataset.cite;
     const txt=f==='bibtex'?bibTeX(a):f==='ris'?risRec(a):apaCite(a);
-    copyText(txt);ripple(b);toast(`${f.toUpperCase()} → ${t('t.copied')}`);
+    copyWithFeedback(txt,b,`${f.toUpperCase()} → ${t('t.copied')}`);
   });
   $$('#tocList [data-doi]').forEach(b=>b.onclick=e=>{
-    e.stopPropagation();copyText(idCopy(byId(b.dataset.doi)));ripple(b);toast(t('t.doi'));
+    e.stopPropagation();copyWithFeedback(idCopy(byId(b.dataset.doi)),b,t('t.doi'));
   });
   $$('#tocList [data-pdf]').forEach(b=>b.onclick=e=>{e.stopPropagation();openPdf(byId(b.dataset.pdf))});
 }
@@ -536,7 +555,7 @@ function renderFeatured(){
   }),{threshold:.6});
   $$('.fcites').forEach(el=>{el.textContent=`0 ${pl(0,'pl.cite')}`;featIO.observe(el)});
   $$('#featGrid [data-fcite]').forEach(b=>b.onclick=()=>{
-    copyText(apaCite(byId(b.dataset.fcite)));ripple(b);toast(t('t.cite'));
+    copyWithFeedback(apaCite(byId(b.dataset.fcite)),b,t('t.cite'));
   });
   $$('#featGrid [data-fpdf]').forEach(b=>b.onclick=()=>openPdf(byId(b.dataset.fpdf)));
 }
@@ -579,7 +598,7 @@ function renderBoard(){
       </div>
     </div>`;
   }).join('');
-  $$('.morcid').forEach(b=>b.onclick=()=>{copyText('https://orcid.org/'+b.dataset.orcid);ripple(b);toast('ORCID → '+t('t.copied'))});
+  $$('.morcid').forEach(b=>b.onclick=()=>copyWithFeedback('https://orcid.org/'+b.dataset.orcid,b,'ORCID → '+t('t.copied')));
   $$('.mcard [data-prof]').forEach(b=>b.onclick=()=>toast(t('t.profile')));
   $$('.mcard').forEach(c=>{
     const tg=()=>c.classList.toggle('open');
@@ -657,8 +676,8 @@ function renderArchive(){
   const sorted=[...recs].sort((a,b)=>archSort==='year'?b.y-a.y||b.n-a.n:b.c-a.c||b.y-a.y);
   $('#shelf').innerHTML=sorted.map(is=>{
     const has=archTopic==='all'||is.arts.some(a=>a.topic===archTopic);
-    return `<button class="spine ${has?'':'dim'} ${is.key===archKey?'sel':''}" data-i="${is.key}" aria-label="${is.y} ${t('no')}${is.n}" style="--c:${topicCol(is.main)};width:${64+is.c*2}px">
-      <span class="sn">${t('no')}${is.n}</span><span class="sy">${is.y} · ${is.c}</span>
+    return `<button class="spine ${has?'':'dim'} ${is.key===archKey?'sel':''}" data-i="${is.key}" aria-label="${is.y} ${is.collection?t('arch.collection'):t('no')+is.n}" style="--c:${topicCol(is.main)};width:${64+is.c*2}px">
+      <span class="sn">${is.collection?t('arch.collectionShort'):t('no')+is.n}</span><span class="sy">${is.y} · ${is.c}</span>
     </button>`;
   }).join('');
   $$('#shelf .spine').forEach(b=>b.onclick=()=>{archKey=b.dataset.i;renderArchive()});
@@ -676,8 +695,9 @@ function renderIssuePanel(is){
     </button>`;
   }).join('');
   $('#issuePanel').innerHTML=`
-    <div class="ip-head"><h4>${is.y} · ${t('no')} ${is.n} <span style="color:var(--muted);font-weight:500">(${t('vol')} ${is.vol})</span></h4>
-      <span class="mono">${is.c} ${pl(is.c,'pl.article')}${is.date?` · ${t('issue.pub')} ${is.date[LANG]}`:''}</span></div>
+    <div class="ip-head"><h4>${is.y} · ${is.collection?t('arch.collection'):`${t('no')} ${is.n} <span style="color:var(--muted);font-weight:500">(${t('vol')} ${is.vol})</span>`}</h4>
+      <span class="mono">${is.c} ${pl(is.c,is.collection?'pl.document':'pl.article')}${is.date?` · ${t('issue.pub')} ${is.date[LANG]}`:''}</span></div>
+    ${is.collection?`<p class="collection-note">${t('arch.collectionNote')}</p>`:''}
     <div class="ip-list">${rows}</div>`;
   $$('#issuePanel .ip-row').forEach(b=>b.onclick=()=>openPdf(byId(b.dataset.art)));
 }
@@ -688,11 +708,10 @@ $('#newsForm').addEventListener('submit',e=>{
   e.preventDefault();
   const v=$('#newsEmail').value.trim();
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){toast(t('t.email'),'warn');return}
-  toast(t('t.subscribed'));$('#newsEmail').value='';
+  toast(t('t.subscriptionUnavailable'),'warn');
 });
 $$('#chanRow .chan').forEach(b=>b.onclick=()=>{
-  if(b.dataset.ch==='rss'){toast(t('t.rss'));return}
-  $$('#chanRow .chan').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  if(b.dataset.ch!=='email'){toast(t('t.channelUnavailable'),'warn');return}
 });
 const drop=$('#drop'),fileInput=$('#fileInput');
 drop.onclick=()=>fileInput.click();
@@ -701,25 +720,14 @@ drop.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDe
 ['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('over')}));
 drop.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f)handleFile(f)});
 fileInput.onchange=()=>{if(fileInput.files[0])handleFile(fileInput.files[0]);fileInput.value=''};
-let upTimer=null;
 function handleFile(f){
   if(!/\.(pdf|docx?|tex)$/i.test(f.name)){toast(t('sub.badFile'),'warn');return}
   if(f.size>10*1048576){toast(t('sub.bigFile'),'warn');return}
-  clearInterval(upTimer);
   $('#upName').textContent=f.name+' · '+(f.size/1048576).toFixed(2)+' MB';
   $('#upl').classList.add('show');$('#upId').textContent='';
-  let p=0;
-  upTimer=setInterval(()=>{
-    p=Math.min(100,p+Math.random()*22);
-    $('#upFill').style.width=p+'%';
-    $('#upStat').textContent=Math.round(p)+'% · '+t('sub.uploading');
-    if(p>=100){
-      clearInterval(upTimer);
-      $('#upStat').textContent=t('sub.done');
-      $('#upId').textContent='ID: GDN-2025-0472';
-      toast(t('t.file')+' — '+f.name);
-    }
-  },260);
+  $('#upFill').style.width='0%';
+  $('#upStat').textContent=t('sub.localOnly');
+  toast(t('sub.localOnly'),'warn');
 }
 $('#goForm').onclick=()=>toast(t('t.sent'));
 function download(href,name,msgKey){
@@ -735,11 +743,11 @@ let pdfArt=null,lastFocus=null;
 function canEmbedPdf(){
   return matchMedia('(min-width:900px) and (hover:hover)').matches&&navigator.pdfViewerEnabled!==false;
 }
-function openPdf(a){
-  pdfArt=a;lastFocus=document.activeElement;
+function openPdf(a,refresh=false){
+  pdfArt=a;if(!refresh)lastFocus=document.activeElement;
   const i=isoIssue(a);
   $('#pdfBody').innerHTML=`
-    <div class="p-kick">${JOURNAL[LANG].toUpperCase()} · ${t('vol').toUpperCase()} ${i.vol} · ${t('no')} ${i.n} · ${i.y} · ${pagesLabel(a).toUpperCase()}</div>
+    <div class="p-kick">${i.collection?t('arch.collection').toUpperCase():`${JOURNAL[LANG].toUpperCase()} · ${t('vol').toUpperCase()} ${i.vol} · ${t('no')} ${i.n}`} · ${i.y} · ${pagesLabel(a).toUpperCase()}</div>
     <h3>${artTitle(a)}</h3>
     <div class="pdf-authors">${authorsStr(a)}</div>
     <div class="pdf-meta"><span class="tag" style="--c:${topicCol(a.topic)}">${TOPICS[a.topic][LANG]}</span><span>${t('pdf.src')}: ${srcLine(a)}</span></div>
@@ -750,12 +758,13 @@ function openPdf(a){
       :`<a class="pdf-first" href="${a.pdf}" target="_blank" rel="noopener"><img src="${a.img}" alt="${t('pdf.p1')}"><span class="chip">${t('pdf.open')}</span></a>`}
   `;
   $('#pdfDoi').textContent=idLabel(a);
+  $('#pdfCopyDoi').innerHTML=`<svg><use href="#i-copy"/></svg>${a.doi?'DOI':a.edn?'EDN':'PDF'}`;
   $('#pdfOpen').href=a.pdf;
   $('#pdfDl').href=a.pdf;$('#pdfDl').setAttribute('download','');
   $('#pdfPanel').scrollTop=0;$('#pdfBody').scrollTop=0;
   $('#pdfOverlay').classList.add('show');
   document.body.style.overflow='hidden';
-  $('#pdfClose').focus();
+  if(!refresh)$('#pdfClose').focus();
 }
 $('#pdfClose').onclick=closePdf;
 $('#pdfOverlay').addEventListener('click',e=>{if(e.target.id==='pdfOverlay')closePdf()});
@@ -765,22 +774,31 @@ function closePdf(){
   if(!$('#searchOverlay').classList.contains('show'))document.body.style.overflow='';
   if(lastFocus&&lastFocus.focus)try{lastFocus.focus()}catch(_){}
 }
-$('#pdfCite').onclick=e=>{copyText(apaCite(pdfArt));ripple(e.currentTarget);toast(t('t.cite'))};
-$('#pdfCopyDoi').onclick=e=>{copyText(idCopy(pdfArt));ripple(e.currentTarget);toast(t('t.doi'))};
+$('#pdfCite').onclick=e=>copyWithFeedback(apaCite(pdfArt),e.currentTarget,t('t.cite'));
+$('#pdfCopyDoi').onclick=e=>copyWithFeedback(idCopy(pdfArt),e.currentTarget,t('t.doi'));
 
 /* ═════════════════ ПОИСК ═════════════════ */
+let searchFocus=null,searchFocusTimer=null;
 function openSearch(){
+  if(!$('#searchOverlay').classList.contains('show'))searchFocus=document.activeElement;
   $('#searchOverlay').classList.add('show');document.body.style.overflow='hidden';
-  const inp=$('#searchInput');inp.value='';renderSearch('');setTimeout(()=>inp.focus(),80);
+  const inp=$('#searchInput');inp.value='';renderSearch('');
+  clearTimeout(searchFocusTimer);searchFocusTimer=setTimeout(()=>inp.focus(),80);
 }
-function closeSearch(){$('#searchOverlay').classList.remove('show');if(!$('#pdfOverlay').classList.contains('show'))document.body.style.overflow=''}
+function closeSearch(){
+  if(!$('#searchOverlay').classList.contains('show'))return;
+  clearTimeout(searchFocusTimer);
+  $('#searchOverlay').classList.remove('show');
+  if(!$('#pdfOverlay').classList.contains('show'))document.body.style.overflow='';
+  if(searchFocus&&searchFocus.focus)searchFocus.focus();
+}
 $('#searchBtn').onclick=openSearch;
 $('#searchClose').onclick=closeSearch;
 $('#searchOverlay').addEventListener('click',e=>{if(e.target.id==='searchOverlay')closeSearch()});
 $('#searchInput').addEventListener('input',e=>renderSearch(e.target.value.trim().toLowerCase()));
 function renderSearch(q){
   if(!q){$('#searchResults').innerHTML=`<div class="sr-empty">${t('srch.hint')}</div>`;return}
-  const hay=a=>[a.ru.t,a.en.t,a.authors.join(' '),a.authors.map(translit).join(' '),a.ru.k.join(' '),a.en.k.join(' '),a.doi?'doi '+a.doi:'',a.edn?'edn '+a.edn:'',TOPICS[a.topic].ru,TOPICS[a.topic].en].join(' ').toLowerCase();
+  const hay=a=>[a.ru.t,a.en.t,a.authors.join(' '),a.authors.map(translit).join(' '),a.ru.k.join(' '),a.en.k.join(' '),a.pdf,String(isoIssue(a).y),a.doi?'doi '+a.doi:'',a.edn?'edn '+a.edn:'',TOPICS[a.topic].ru,TOPICS[a.topic].en].join(' ').toLowerCase();
   const res=ARTICLES.filter(a=>hay(a).includes(q)).slice(0,8);
   $('#searchResults').innerHTML=res.length?res.map(a=>`
     <button class="sr-item" data-art="${a.id}" data-cursor="read">
@@ -788,14 +806,14 @@ function renderSearch(q){
       <span class="sr-txt"><span class="meta"><span>${TOPICS[a.topic][LANG]}</span><span>${issueLabel(a)}</span>${a.cites!=null?`<span>▲ ${a.cites}</span>`:''}</span>
       <h5>${artTitle(a)}</h5><p>${authorsStr(a)} · ${idLabel(a)}</p></span>
     </button>`).join(''):`<div class="sr-empty">${t('srch.none')}</div>`;
-  $$('#searchResults .sr-item').forEach(b=>b.onclick=()=>{
+  $$('#searchResults [data-art]').forEach(b=>b.onclick=()=>{
     closeSearch();
     const a=byId(b.dataset.art);
     if(a.issue==='2025-01'){
       document.getElementById('issue').scrollIntoView({behavior:'smooth'});
       setTimeout(()=>{
         const row=$('#row-'+a.id);
-        if(row){row.classList.add('open','flash');setTimeout(()=>row.classList.remove('flash'),1700);row.scrollIntoView({behavior:'smooth',block:'center'})}
+        if(row){row.classList.add('open','flash');row.querySelector('.toc-btn').setAttribute('aria-expanded','true');setTimeout(()=>row.classList.remove('flash'),1700);row.scrollIntoView({behavior:'smooth',block:'center'})}
       },650);
     }else openPdf(a);
   });
@@ -882,6 +900,9 @@ function renderAll(){
 function setLang(l){
   LANG=l;
   renderAll();
+  if($('#pdfOverlay').classList.contains('show'))openPdf(pdfArt,true);
+  if($('#searchOverlay').classList.contains('show'))renderSearch($('#searchInput').value.trim().toLowerCase());
+  if($('#upl').classList.contains('show'))$('#upStat').textContent=t('sub.localOnly');
   document.fonts.ready.then(buildTargets);
   toast(t('t.lang'));
 }
