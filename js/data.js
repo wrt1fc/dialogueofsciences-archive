@@ -1,7 +1,6 @@
 /* ═════════════════ ДАННЫЕ ═════════════════
-   Все библиографические данные сверены с первыми страницами PDF
-   (2025/ — выпуск 2025 № 1, 2024/ — материалы за 2024 год,
-    2026/ — выпуск 2026 № 1). */
+   Все библиографические данные сверены с первыми страницами PDF.
+   PDF хранятся в pdf/ГОД/c1.pdf, c2.pdf и далее по порядку записей. */
 
 const TOPICS = {
   digital:{ru:`Цифровые технологии в образовании`,en:`Digital Technologies in Education`,cv:'--n-digital'},
@@ -28,7 +27,7 @@ const ARTICLES = [
 
  /* ═══ ВЫПУСК 2026 № 1 (2026/) ═══ */
 
- {id:'c1',topic:'tourism',issue:'2026-01',img:'img/prev/c1.jpg',pdf:'2026/c1.pdf',
+ {id:'c1',topic:'tourism',issue:'2026-01',img:'img/prev/c1.jpg',pdf:'pdf/2026/c1.pdf',
   cites:null,pages:'3–13',np:11,doi:'10.24411/2686-8842-2026-0201',
   authors:['Агамирова Е. В.','Чубанова Г. Р.','Красильников А. А.','Борисовец Д. Р.','Чалова О. А.','Лебедев К. А.'],
   ru:{t:`Организация молодёжных туристических походов как метод воспитания культуры безопасности жизнедеятельности`,
@@ -38,7 +37,7 @@ const ARTICLES = [
    a:`The article examines the organization of tourist hikes with children and youth groups as an effective tool for fostering a culture of life safety from an economic perspective. It has been established that tourist hikes not only help develop skills for safe behavior in natural environments but also optimize educational costs through hands-on learning. The study analyses the economic aspects of preparing for hikes, including expenses for equipment, instructor training, and safety measures. Based on participant surveys and case studies, it has been revealed that such activities help reduce social costs associated with injuries and lack of preparedness for emergencies.`,
    k:[`tourist hikes`,`safety culture`,`life activity`,`tourism economics`,`education`,`regional development`]}},
 
- {id:'c2',topic:'digital',issue:'2026-01',img:'img/prev/c2.jpg',pdf:'2026/c2.pdf',
+ {id:'c2',topic:'digital',issue:'2026-01',img:'img/prev/c2.jpg',pdf:'pdf/2026/c2.pdf',
   cites:null,pages:'14–16',np:3,doi:'10.24411/2686-8842-2026-0202',
   authors:['Федорова Е. Ю.','Козловский А. Д.','Красильников А. А.','Лубышев Е. А.'],
   ru:{t:`Дифференцированный подход к физическому воспитанию студентов: интеграция веб-ресурсов и VR-технологий`,
@@ -48,7 +47,7 @@ const ARTICLES = [
    a:`Objective of the study was to develop and test a publicly available web resource, “Biological Age Determination”, for assessing students’ physical fitness. This resource integrates anthropometric measurements and fitness tracker data, with the potential for future integration into physical education, including the use of VR technologies. The service was piloted with students at the Institute of Natural Sciences and Sports Technologies of Moscow City University. The pilot demonstrated the service’s effectiveness as a tool for increasing student engagement and motivation, while the use of VR technology made physical education safer.`,
    k:[`physical education`,`web resource`,`biological age`,`students`,`health monitoring`,`personalization`,`VR technology`]}},
 
- {id:'c3',topic:'digital',issue:'2026-01',img:'img/prev/c3.jpg',pdf:'2026/c3.pdf',
+ {id:'c3',topic:'digital',issue:'2026-01',img:'img/prev/c3.jpg',pdf:'pdf/2026/c3.pdf',
   cites:null,pages:'17–22',np:6,doi:'10.24411/2686-8842-2026-0203',
   authors:['Красильников А. А.','Лубышев Е. А.','Лукин А. С.'],
   ru:{t:`Цифровая трансформация учебного процесса: применение веб-сервиса для персонализированного обучения прыжкам в длину в школе`,
@@ -58,7 +57,7 @@ const ARTICLES = [
    a:`The individualisation of learners’ physical activity under the digitalisation of education is becoming particularly important. Despite a wealth of methodological materials on teaching track-and-field disciplines, the problem of prompt correction of the long jump technique in learners with different levels of physical fitness remains understudied. The article considers the possibility of using the specialised web service “Jump Master” as a tool for personalised feedback and analyses the current state and prospects of integrating such solutions into the structure of a physical education lesson.`,
    k:[`individualisation of physical activity`,`digital technologies`,`web service`,`long jump technique`,`pedagogical observation`,`feedback`]}},
 
- {id:'c4',topic:'digital',issue:'2026-01',img:'img/prev/c4.jpg',pdf:'2026/c4.pdf',
+ {id:'c4',topic:'digital',issue:'2026-01',img:'img/prev/c4.jpg',pdf:'pdf/2026/c4.pdf',
   cites:null,pages:'23–27',np:5,doi:'10.24411/2686-8842-2026-0204',
   authors:['Лукин А. С.','Красильников А. А.','Шпилькина Т. А.'],
   ru:{t:`Разработка и верификация веб-сервиса «Футбол 21 век» для обучения тактическим элементам футбола на основе имитационного моделирования средствами Python`,
@@ -68,7 +67,7 @@ const ARTICLES = [
    a:`The aim of the study is to develop, theoretically substantiate and experimentally test the effectiveness of the “Football 21st Century” web service, designed for learning the basic tactical elements of football in physical education lessons. The paper describes the architecture of the web service and the principles of populating it. Special attention is paid to content verification: to ensure the validity of the game situations and tactical schemes built into the service, mathematical modelling implemented in Python was applied. This made it possible to create a trainer that is not only interactive but also mathematically correct, adequately reflecting the physics and logic of football interactions.`,
    k:[`web service`,`football`,`mathematical modelling`,`Python`,`physical culture`]}},
 
- {id:'c5',topic:'sport',issue:'2026-01',img:'img/prev/c5.jpg',pdf:'2026/c5.pdf',
+ {id:'c5',topic:'sport',issue:'2026-01',img:'img/prev/c5.jpg',pdf:'pdf/2026/c5.pdf',
   cites:null,pages:'28–31',np:4,doi:'10.24411/2686-8842-2026-0205',
   authors:['Красильников А. А.','Лубышев Е. А.','Цзи Сюйхун','Бульчев Р. Ю.'],
   ru:{t:`Цифровая трансформация тактической подготовки в баскетболе: интерактивные VR/AR-симуляции и мобильные приложения как инструменты развития игрового интеллекта`,
@@ -78,7 +77,7 @@ const ARTICLES = [
    a:`The article examines an innovative approach to tactical training of athletes in team sports based on the integration of digital technologies into the training process. Using basketball as an example, it analyses the potential of mobile applications and virtual (VR) and augmented reality (AR) technologies for developing game intelligence, spatial thinking and decision-making speed. The results of an 8-week pedagogical experiment with 24 university-level basketball players are presented.`,
    k:[`tactical training`,`basketball`,`virtual reality`,`augmented reality`,`mobile applications`,`game intelligence`,`decision-making`,`interactive simulations`]}},
 
- {id:'c6',topic:'psy',issue:'2026-01',img:'img/prev/c6.jpg',pdf:'2026/c6.pdf',
+ {id:'c6',topic:'psy',issue:'2026-01',img:'img/prev/c6.jpg',pdf:'pdf/2026/c6.pdf',
   cites:null,pages:'32–36',np:5,doi:'10.24411/2686-8842-2026-0206',
   authors:['Красильников А. А.','Павлова В. С.','Тодороски К.','Зубарев М. Д.'],
   ru:{t:`Разработка и обоснование образовательного веб-ресурса для оценки психофизиологического состояния старшеклассников`,
@@ -88,7 +87,7 @@ const ARTICLES = [
    a:`The article substantiates the development of the educational web resource “Psychophysical Health of a High School Student” for diagnosing and supporting the psychophysiological state of students in grades 10–11. It presents the results of an empirical study confirming high levels of fatigue and anxiety and reduced concentration among high school students. The structure of the web resource, which includes diagnostic, recommendation and communication modules, is described. Approaches to assessing the resource’s effectiveness on the basis of quantitative and subjective criteria are considered. The authors conclude that a digital tool is in demand for the timely detection of overfatigue and for building self-regulation skills in high school students.`,
    k:[`educational web resource`,`psychophysiological state`,`high school students`,`self-regulation`,`digital pedagogy`,`diagnostic module`,`health preservation`]}},
 
- {id:'c7',topic:'digital',issue:'2026-01',img:'img/prev/c7.jpg',pdf:'2026/c7.pdf',
+ {id:'c7',topic:'digital',issue:'2026-01',img:'img/prev/c7.jpg',pdf:'pdf/2026/c7.pdf',
   cites:null,pages:'37–39',np:3,doi:'10.24411/2686-8842-2026-0207',
   authors:['Сомов А. А.','Красильников А. А.','Лукин А. С.'],
   ru:{t:`Теоретическое использование реляционных баз с применением языка SQL в геологоразведке твёрдых полезных ископаемых`,
@@ -100,7 +99,7 @@ const ARTICLES = [
 
  /* ═══ ВЫПУСК 2025 № 1 (2025/) ═══ */
 
- {id:'a1',topic:'digital',issue:'2025-01',feat:'big',img:'img/prev/a1.jpg',pdf:'2025/pdf1.pdf',cites:14,pages:'97–101',np:5,doi:'10.24411/2686-8842-2025-0305',
+ {id:'a1',topic:'digital',issue:'2025-01',feat:'big',img:'img/prev/a1.jpg',pdf:'pdf/2025/c1.pdf',cites:14,pages:'97–101',np:5,doi:'10.24411/2686-8842-2025-0305',
   authors:['Красильников А. А.','Чубанова Г. Р.','Сергеева Ю. С.','Журавлев Г. И.'],
   ru:{t:`Внедрение информационно-компьютерных технологий в обучение студентов колледжа народных искусств: результаты и перспективы`,
    a:`Статья посвящена исследованию внедрения информационно-компьютерных технологий в образовательный процесс для студентов 1 и 2 курсов колледжа Высшей школы народных искусств по направлениям художественная вышивка, ювелирное искусство, художественная роспись ткани и роспись по металлу. Акцентируется внимание на важности цифровых инструментов для повышения качества обучения и развития умений работы с информацией.`,
@@ -109,7 +108,7 @@ const ARTICLES = [
    a:`The article studies the introduction of information and computer technologies into the educational process for first- and second-year students of the College of the Higher School of Folk Arts. It stresses the importance of digital tools for improving the quality of teaching and developing information skills.`,
    k:[`information and computer technologies`,`teaching`,`digital tools`,`educational process`,`senior grades`,`effectiveness`]}},
 
- {id:'a2',topic:'sport',issue:'2025-01',feat:'mid',img:'img/prev/a2.jpg',pdf:'2025/pdf2.pdf',cites:8,pages:'42–48',np:7,doi:'10.24411/2686-8842-2025-0307',
+ {id:'a2',topic:'sport',issue:'2025-01',feat:'mid',img:'img/prev/a2.jpg',pdf:'pdf/2025/c2.pdf',cites:8,pages:'42–48',np:7,doi:'10.24411/2686-8842-2025-0307',
   authors:['Красильников А. А.','Будеску А. А.'],
   ru:{t:`Инновационные подходы к обучению технике волейбола: внедрение веб-сервиса для учащихся 5-х классов`,
    a:`Статья исследует внедрение веб-сервиса «Мастерство волейбола в один клик» в обучение технике волейбола для учащихся 5-х классов. Она подчёркивает важность информационных технологий для повышения уровня овладения техническими навыками.`,
@@ -118,7 +117,7 @@ const ARTICLES = [
    a:`The article examines the introduction of the web service “Volleyball Mastery in One Click” into teaching volleyball technique to 5th-grade students. It underlines the importance of information technology for mastering technical skills.`,
    k:[`volleyball`,`web service`,`technique`,`physical education`,`information technology`,`pupils`]}},
 
- {id:'a3',topic:'digital',issue:'2025-01',feat:'mid',img:'img/prev/a3.jpg',pdf:'2025/pdf3.pdf',cites:5,pages:'80–96',np:17,doi:'10.24411/2686-8842-2025-0303',
+ {id:'a3',topic:'digital',issue:'2025-01',feat:'mid',img:'img/prev/a3.jpg',pdf:'pdf/2025/c3.pdf',cites:5,pages:'80–96',np:17,doi:'10.24411/2686-8842-2025-0303',
   authors:['Красильников А. А.','Агамирова Е. В.','Лубышев Е. А.'],
   ru:{t:`Веб-платформы и сервисы как инструменты инновационного обучения: применение современных технологий, возможности и преимущества`,
    a:`Статья исследует использование веб-платформ и сервисов в рамках инновационных методов обучения, подчёркивая их роль в повышении эффективности образовательного процесса.`,
@@ -127,7 +126,7 @@ const ARTICLES = [
    a:`The article studies the use of web platforms and services within innovative teaching methods, stressing their role in making education more effective.`,
    k:[`volleyball`,`web service`,`technical elements`,`physical education`,`information technology`,`schoolchildren`]}},
 
- {id:'a4',topic:'digital',issue:'2025-01',feat:'wide',img:'img/prev/a4.jpg',pdf:'2025/pdf4.pdf',cites:11,pages:'73–75',np:3,doi:'10.24411/2686-8842-2025-0304',
+ {id:'a4',topic:'digital',issue:'2025-01',feat:'wide',img:'img/prev/a4.jpg',pdf:'pdf/2025/c4.pdf',cites:11,pages:'73–75',np:3,doi:'10.24411/2686-8842-2025-0304',
   authors:['Красильников А. А.','Лубышев Е. А.','Заппаров Р. И.','Роготнева А. В.'],
   ru:{t:`Разработка веб-ресурса для обучения школьников настольному теннису: внедрение информационных технологий в теоретическую подготовку`,
    a:`Цель исследования — разработать и обосновать эффективность сайта для школьников, предназначенного для углублённого изучения данного вида спорта.`,
@@ -136,7 +135,7 @@ const ARTICLES = [
    a:`Objective of the study was to develop and justify the effectiveness of a website for schoolchildren designed for in-depth study of this sport.`,
    k:[`table tennis`,`web technologies`,`educational resource`,`physical education`,`theoretical training`]}},
 
- {id:'a5',topic:'pe',issue:'2025-01',img:'img/prev/a5.jpg',pdf:'2025/pdf5.pdf',cites:6,pages:'107–112',np:6,doi:'10.24411/2686-8842-2025-0309',
+ {id:'a5',topic:'pe',issue:'2025-01',img:'img/prev/a5.jpg',pdf:'pdf/2025/c5.pdf',cites:6,pages:'107–112',np:6,doi:'10.24411/2686-8842-2025-0309',
   authors:['Красильников А. А.','Чубанова Г. Р.','Щербина А. Ф.','Щербина Ю. Ф.'],
   ru:{t:`Современные информационные ресурсы в системе школьного физического воспитания`,
    a:`В данной статье рассматриваются возможности и актуальность использования веб-технологий в процессе физического воспитания обучающихся в школе.`,
@@ -145,7 +144,7 @@ const ARTICLES = [
    a:`The article considers the possibilities and relevance of using web technologies in the physical education of schoolchildren.`,
    k:[`physical education`,`use of web technologies`,`multimedia educational resources`,`educational technologies`,`informatisation of education`]}},
 
- {id:'a6',topic:'digital',issue:'2025-01',img:'img/prev/a6.jpg',pdf:'2025/pdf6.pdf',cites:4,pages:'45–49',np:5,doi:'10.24411/2686-8842-2025-0308',
+ {id:'a6',topic:'digital',issue:'2025-01',img:'img/prev/a6.jpg',pdf:'pdf/2025/c6.pdf',cites:4,pages:'45–49',np:5,doi:'10.24411/2686-8842-2025-0308',
   authors:['Красильников А. А.','Колоколова И. В.','Колоколов Д. И.'],
   ru:{t:`Волейбол в цифровой среде: веб-сервисы и платформы для инновационного обучения`,
    a:`Статья исследует использование веб-платформ и сервисов в рамках инновационных методов обучения, подчёркивая их роль в повышении эффективности образовательного процесса.`,
@@ -154,7 +153,7 @@ const ARTICLES = [
    a:`The article studies the use of web platforms and services within innovative teaching methods.`,
    k:[`volleyball`,`web service`,`technical elements`,`physical education`,`information technology`,`schoolchildren`]}},
 
- {id:'a7',topic:'digital',issue:'2025-01',img:'img/prev/a7.jpg',pdf:'2025/pdf7.pdf',cites:7,pages:'101–105',np:5,doi:'10.24411/2686-8842-2025-0310',
+ {id:'a7',topic:'digital',issue:'2025-01',img:'img/prev/a7.jpg',pdf:'pdf/2025/c7.pdf',cites:7,pages:'101–105',np:5,doi:'10.24411/2686-8842-2025-0310',
   authors:['Красильников А. А.','Федорова Е. Ю.','Козловский А. Д.'],
   ru:{t:`Реализация образовательного ресурса «VR-наставник» средствами Python для персонализации физического развития`,
    a:`Настоящая статья посвящена разработке и внедрению образовательного ресурса «VR-наставник» для реализации персонализированного подхода в физическом развитии.`,
@@ -163,7 +162,7 @@ const ARTICLES = [
    a:`The article is devoted to the development and introduction of the “VR Mentor” educational resource for a personalised approach to physical development.`,
    k:[`physical education`,`web resource`,`students`,`personalisation`,`motivation`,`VR technologies`]}},
 
- {id:'a8',topic:'health',issue:'2025-01',img:'img/prev/a8.jpg',pdf:'2025/pdf8.pdf',cites:12,pages:'159–163',np:5,doi:'10.24411/2686-8842-2025-0306',
+ {id:'a8',topic:'health',issue:'2025-01',img:'img/prev/a8.jpg',pdf:'pdf/2025/c8.pdf',cites:12,pages:'159–163',np:5,doi:'10.24411/2686-8842-2025-0306',
   authors:['Лубышев Е. А.','Красильников А. А.','Кривенков А. А.','Заппаров Р. И.'],
   ru:{t:`Изменения пищевого поведения студентов в ситуации продолжительного стресса`,
    a:`Статья посвящена изучению влияния стресса у студентов в момент экзаменов и зачётов, в частности исследуется изменение привычек пищевого поведения.`,
@@ -172,7 +171,7 @@ const ARTICLES = [
    a:`The article studies the effect of stress on students during exams and credit tests, in particular changes in eating habits.`,
    k:[`stress`,`eating behavior`,`nutrition`,`student stress`,`psychological exhaustion`,`exam session`,`eating habits`,`study load`,`biochemistry of stress`,`stress theory`]}},
 
- {id:'a9',topic:'pe',issue:'2025-01',img:'img/prev/a9.jpg',pdf:'2025/pdf9.pdf',cites:9,pages:'182–187',np:6,doi:'10.24411/2686-8842-2025-0311',
+ {id:'a9',topic:'pe',issue:'2025-01',img:'img/prev/a9.jpg',pdf:'pdf/2025/c9.pdf',cites:9,pages:'182–187',np:6,doi:'10.24411/2686-8842-2025-0311',
   authors:['Красильников А. А.','Журавлев Г. И.','Сергеева Ю. С.','Лубышев Е. А.'],
   ru:{t:`Интеграция веб-технологий в систему физического воспитания школьников`,
    a:`Настоящая статья посвящена исследованию актуальности и возможностей интеграции веб-технологий в процесс физического воспитания школьников.`,
@@ -181,7 +180,7 @@ const ARTICLES = [
    a:`The article studies the relevance and possibilities of integrating web technologies into school physical education.`,
    k:[`physical education`,`web technologies`,`multimedia resources`,`schoolchildren`,`informatisation`,`motivation`]}},
 
- {id:'a10',topic:'sport',issue:'2025-01',img:'img/prev/a10.jpg',pdf:'2025/pdf10.pdf',cites:3,pages:'277–282',np:6,doi:'10.24411/2686-8842-2025-0312',
+ {id:'a10',topic:'sport',issue:'2025-01',img:'img/prev/a10.jpg',pdf:'pdf/2025/c10.pdf',cites:3,pages:'277–282',np:6,doi:'10.24411/2686-8842-2025-0312',
   authors:['Тимофеева О. В.','Мамонова О. В.','Лубышев Е. А.','Красильников А. А.'],
   ru:{t:`Оптимизация тренировки гибкости у девочек 9–11 лет в рамках художественной гимнастики`,
    a:`Статья посвящена исследованию эффективности методики развития гибкости у девочек 9–11 лет, занимающихся художественной гимнастикой.`,
@@ -190,7 +189,7 @@ const ARTICLES = [
    a:`The article studies the effectiveness of a method for developing flexibility in girls aged 9–11 who practise rhythmic gymnastics.`,
    k:[`flexibility`,`rhythmic gymnastics`,`methodology`,`girls aged 9–11`,`physical development`,`pedagogical experiment`,`exercises`]}},
 
- {id:'a11',topic:'olymp',issue:'2025-01',img:'img/prev/a11.jpg',pdf:'2025/pdf11.pdf',cites:2,pages:'225–228',np:4,doi:'10.24411/2686-8842-2025-0313',
+ {id:'a11',topic:'olymp',issue:'2025-01',img:'img/prev/a11.jpg',pdf:'pdf/2025/c11.pdf',cites:2,pages:'225–228',np:4,doi:'10.24411/2686-8842-2025-0313',
   authors:['Федорова Е. Ю.','Лубышев Е. А.','Красильников А. А.','Кутьин И. В.'],
   ru:{t:`Изменения имиджа зимних видов спорта в перспективе проведения зимних Олимпийских игр 2026 в Кортина д’Ампеццо`,
    a:`Участие сборной России в XXIV Олимпийских Играх-2026 на данный момент ещё не определено. В результате проведённого опроса студентов было определено их отношение к участию российских спортсменов в Олимпийских Играх-2026.`,
@@ -201,7 +200,7 @@ const ARTICLES = [
 
  /* ═══ ВЫПУСК 2024 № 1 (2024/) ═══ */
 
- {id:'b1',topic:'pe',issue:'2024-01',img:'img/prev/b1.jpg',pdf:'2024/b01.pdf',cites:null,pages:'24–27',np:4,edn:'QNKFGA',conf:true,
+ {id:'b1',topic:'pe',issue:'2024-01',img:'img/prev/b1.jpg',pdf:'pdf/2024/c1.pdf',cites:null,pages:'24–27',np:4,edn:'QNKFGA',conf:true,
   authors:['Барков А. Р.','Красильников А. А.'],
   src:{ru:`Инновационные технологии в спорте и физическом воспитании подрастающего поколения: сб. статей по материалам I международной (XIV с международным участием) научно-практической конференции, Москва, 19 апреля 2024 г. — Москва: Медиагруппа «ХАСК», 2024.`,en:`Innovative Technologies in Sports and Physical Education of the Younger Generation: Proceedings of the I International Scientific and Practical Conference, Moscow, 19 April 2024. Moscow: Mediagruppa “KhASK”, 2024.`,jr:`Инновационные технологии в спорте и физическом воспитании подрастающего поколения`,je:`Innovative Technologies in Sports and Physical Education of the Younger Generation`,pub:`Медиагруппа «ХАСК»`,pube:`Mediagruppa “KhASK”`,city:`Москва`,citye:`Moscow`},
   ru:{t:`Эффективные подходы к физической подготовке обучающихся среднего школьного возраста в дополнительном образовании`,
@@ -211,7 +210,7 @@ const ARTICLES = [
    a:`The study analyses effective approaches to the physical training of middle-school students in supplementary education, using the “School of Equal Opportunities” as an example.`,
    k:[`middle-school students`,`sports training`,`training programmes`]}},
 
- {id:'b2',topic:'psy',issue:'2024-01',img:'img/prev/b2.jpg',pdf:'2024/b02.pdf',cites:null,pages:'60–63',np:4,edn:'JXECOY',conf:true,
+ {id:'b2',topic:'psy',issue:'2024-01',img:'img/prev/b2.jpg',pdf:'pdf/2024/c2.pdf',cites:null,pages:'60–63',np:4,edn:'JXECOY',conf:true,
   authors:['Лубышев Е. А.','Красильников А. А.'],
   src:'b1',
   ru:{t:`Осознание потребностей студентов в процессе обучения игре в бильярд: перспективы развития в рамках дополнительного профессионального образования`,
@@ -221,7 +220,7 @@ const ARTICLES = [
    a:`More and more schoolchildren choose billiards for physical education classes. Using Maslow’s hierarchy of needs, the authors analyse which needs of students can be developed in billiards classes.`,
    k:[`billiards`,`hierarchy of needs`,`development`,`students`,`physical education`]}},
 
- {id:'b3',topic:'psy',issue:'2024-01',img:'img/prev/b3.jpg',pdf:'2024/b03.pdf',cites:null,pages:'64–68',np:5,edn:'ANMNJL',conf:true,
+ {id:'b3',topic:'psy',issue:'2024-01',img:'img/prev/b3.jpg',pdf:'pdf/2024/c3.pdf',cites:null,pages:'64–68',np:5,edn:'ANMNJL',conf:true,
   authors:['Лубышев Е. А.','Красильников А. А.'],
   src:'b1',
   ru:{t:`Роль произвольного внимания и его развитие в ходе игры на бильярде`,
@@ -231,7 +230,7 @@ const ARTICLES = [
    a:`The article considers the influence of playing billiards on the development of voluntary attention.`,
    k:[`billiards`,`sport`,`athletes`,`voluntary attention`,`development of qualities`]}},
 
- {id:'b4',topic:'digital',issue:'2024-01',img:'img/prev/b4.jpg',pdf:'2024/b04.pdf',cites:null,pages:'212–216',np:5,edn:'NEHVBE',
+ {id:'b4',topic:'digital',issue:'2024-01',img:'img/prev/b4.jpg',pdf:'pdf/2024/c4.pdf',cites:null,pages:'212–216',np:5,edn:'NEHVBE',
   authors:['Федорова Е. Ю.','Лубышев Е. А.','Красильников А. А.','Голубничий С. П.'],
   src:{ru:`Современное педагогическое образование. 2024. № 12. С. 212–216.`,en:`Sovremennoe pedagogicheskoe obrazovanie [Modern Pedagogical Education]. 2024, no. 12, pp. 212–216.`,jr:`Современное педагогическое образование`,je:`Sovremennoe pedagogicheskoe obrazovanie`,iss:`12`},
   ru:{t:`Инновационные веб-решения для индивидуализированной коррекции телосложения`,
@@ -241,7 +240,7 @@ const ARTICLES = [
    a:`The article discusses the shortcomings of available methods of body composition correction and stresses the importance of personalised approaches to nutrition and physical activity.`,
    k:[`overweight`,`body composition correction`,`nutrition`,`physical activity`,`web technologies`,`online resource`]}},
 
- {id:'b5',topic:'olymp',issue:'2024-01',img:'img/prev/b5.jpg',pdf:'2024/b05.pdf',cites:null,pages:'58–64',np:7,edn:'BPVMAO',
+ {id:'b5',topic:'olymp',issue:'2024-01',img:'img/prev/b5.jpg',pdf:'pdf/2024/c5.pdf',cites:null,pages:'58–64',np:7,edn:'BPVMAO',
   authors:['Шведко В. Е.','Лубышев Е. А.','Красильников А. А.'],
   src:{ru:`Либерально-демократические ценности. 2024. Т. 8, № 3. С. 58–64.`,en:`Journal of Liberal Democratic Values. 2024, vol. 8, no. 3, pp. 58–64.`,jr:`Либерально-демократические ценности`,je:`Journal of Liberal Democratic Values`,vol:`8`,iss:`3`},
   ru:{t:`Правовые аспекты отстранения сборных команд Российской Федерации от участия в олимпийский играх Париж 2024`,
@@ -251,7 +250,7 @@ const ARTICLES = [
    a:`The purpose of the study: to study the legal aspects of the participation of the Russian team in the Olympic Games Paris 2024.`,
    k:[`Olympic Games`,`rights`,`legal aspect`,`Russian national team`,`legislation`,`Olympic Committee`,`legal practice`,`precedent`]}},
 
- {id:'b6',topic:'olymp',issue:'2024-01',img:'img/prev/b6.jpg',pdf:'2024/b06.pdf',cites:null,pages:'13–20',np:8,edn:'SAPHPB',
+ {id:'b6',topic:'olymp',issue:'2024-01',img:'img/prev/b6.jpg',pdf:'pdf/2024/c6.pdf',cites:null,pages:'13–20',np:8,edn:'SAPHPB',
   authors:['Шведко В. Е.','Красильников А. А.','Лубышев Е. А.'],
   src:{ru:`Либерально-демократические ценности. 2024. Т. 8, № 4. С. 13–20.`,en:`Journal of Liberal Democratic Values. 2024, vol. 8, no. 4, pp. 13–20.`,jr:`Либерально-демократические ценности`,je:`Journal of Liberal Democratic Values`,vol:`8`,iss:`4`},
   ru:{t:`Запрет участия сборных команд Российской Федерации в олимпийских играх Париж-2024 и его правовая оценка`,
@@ -261,7 +260,7 @@ const ARTICLES = [
    a:`The significance of the topic lies in the fact that there has never been a precedent for the complete exclusion of a team from participating in the Olympic Games.`,
    k:[`IOC`,`legal foundation`,`Olympic Charter`,`Paris 2024 Olympics`,`doping`,`national teams’ ban`,`international law`,`WADA`]}},
 
- {id:'b7',topic:'health',issue:'2024-01',img:'img/prev/b7.jpg',pdf:'2024/b07.pdf',cites:null,pages:'25–28',np:4,edn:'BHFGLF',
+ {id:'b7',topic:'health',issue:'2024-01',img:'img/prev/b7.jpg',pdf:'pdf/2024/c7.pdf',cites:null,pages:'25–28',np:4,edn:'BHFGLF',
   authors:['Лубышев Е. А.','Красильников А. А.','Чубанова Г. Р.','Тимофеева О. В.'],
   src:{ru:`Современное профессиональное образование. 2024. № 2. С. 25–28.`,en:`Sovremennoe professionalnoe obrazovanie [Modern Professional Education]. 2024, no. 2, pp. 25–28.`,jr:`Современное профессиональное образование`,je:`Sovremennoe professionalnoe obrazovanie`,iss:`2`},
   ru:{t:`Построение режима рационального питания`,
@@ -271,7 +270,7 @@ const ARTICLES = [
    a:`The article analyses the influence of rational nutrition on students’ academic success and general well-being.`,
    k:[`rational nutrition`,`academic success`,`students`,`healthy eating habits`,`nutrition optimisation`,`physical health`]}},
 
- {id:'b8',topic:'pe',issue:'2024-01',img:'img/prev/b8.jpg',pdf:'2024/b08.pdf',cites:null,pages:'96–99',np:4,edn:'NBLECQ',
+ {id:'b8',topic:'pe',issue:'2024-01',img:'img/prev/b8.jpg',pdf:'pdf/2024/c8.pdf',cites:null,pages:'96–99',np:4,edn:'NBLECQ',
   authors:['Красильников А. А.','Лубышев Е. А.','Чужинов А. О.','Пастухов И. С.'],
   src:'b7:2',
   ru:{t:`Эффект общеразвивающих упражнений на уроках физической культуры: анализ влияния на функциональное состояние старшеклассников`,
@@ -281,7 +280,7 @@ const ARTICLES = [
    a:`The article studies the influence of exercises performed in physical education lessons on indicators of the functional state of high school students.`,
    k:[`physical exercises`,`physical education lessons`,`high school students`,`functional state`,`health`,`physiological analysis`]}},
 
- {id:'b9',topic:'sport',issue:'2024-01',img:'img/prev/b9.jpg',pdf:'2024/b09.pdf',cites:null,pages:'117–120',np:4,edn:'FGJIWI',
+ {id:'b9',topic:'sport',issue:'2024-01',img:'img/prev/b9.jpg',pdf:'pdf/2024/c9.pdf',cites:null,pages:'117–120',np:4,edn:'FGJIWI',
   authors:['Сергеева Ю. С.','Красильников А. А.','Лубышев Е. А.','Шептикина Т. С.'],
   src:'b7:3',
   ru:{t:`Динамика развития меткости прямых ударов на занятиях по бильярду`,
@@ -291,7 +290,7 @@ const ARTICLES = [
    a:`The accuracy of straight shots is a key characteristic of a billiards player; the study considers methods of developing accuracy in straight shots among students in billiards classes.`,
    k:[`straight shots`,`billiards`,`accuracy`,`methods`,`research`,`precision`,`training`,`effectiveness`,`performance`]}},
 
- {id:'b10',topic:'health',issue:'2024-01',img:'img/prev/b10.jpg',pdf:'2024/b10.pdf',cites:null,pages:'91–95',np:5,edn:'BQFCDV',
+ {id:'b10',topic:'health',issue:'2024-01',img:'img/prev/b10.jpg',pdf:'pdf/2024/c10.pdf',cites:null,pages:'91–95',np:5,edn:'BQFCDV',
   authors:['Чужинов А. О.','Лубышев Е. А.','Сергеева Ю. С.','Красильников А. А.'],
   src:'b7:4',
   ru:{t:`Построение режима спортивного питания студентов, занимающихся боксом`,
@@ -301,7 +300,7 @@ const ARTICLES = [
    a:`The article analyses the mechanisms of action and effectiveness of sports nutrition among student boxers.`,
    k:[`sports nutrition`,`boxing`,`proteins, fats, carbohydrates`,`athletes’ diet`,`protein`,`amino acids`,`creatine`,`sports supplements`,`endurance`]}},
 
- {id:'b11',topic:'health',issue:'2024-01',img:'img/prev/b11.jpg',pdf:'2024/b11.pdf',cites:null,pages:'96–101',np:6,edn:'ATGPTD',
+ {id:'b11',topic:'health',issue:'2024-01',img:'img/prev/b11.jpg',pdf:'pdf/2024/c11.pdf',cites:null,pages:'96–101',np:6,edn:'ATGPTD',
   authors:['Лубышев Е. А.','Красильников А. А.','Тимофеева О. В.','Чубанова Г. Р.'],
   src:'b7:4',
   ru:{t:`Физическая нагрузка как эффективное средство оптимизации работоспособности студента вуза`,
@@ -311,7 +310,7 @@ const ARTICLES = [
    a:`The article considers the problems of introducing moderate physical activity into students’ daily routine in order to raise their performance.`,
    k:[`physical activity`,`study work`,`bachelor’s programme`,`specialist programme`,`cognitive functions`,`academic performance`,`healthy lifestyle`,`questionnaire`,`work–rest regime`]}},
 
- {id:'b12',topic:'psy',issue:'2024-01',img:'img/prev/b12.jpg',pdf:'2024/b12.pdf',cites:null,pages:'79–83',np:5,edn:'JOLWEK',
+ {id:'b12',topic:'psy',issue:'2024-01',img:'img/prev/b12.jpg',pdf:'pdf/2024/c12.pdf',cites:null,pages:'79–83',np:5,edn:'JOLWEK',
   authors:['Лубышев Е. А.','Красильников А. А.','Сергеева Ю. С.','Борисовец Д. Р.'],
   src:'b7:5',
   ru:{t:`Динамика потребности в принятии на занятиях ЭДФК по бильярду`,
@@ -389,7 +388,7 @@ const ARCHIVE_DOCUMENTS = [
   const m=ARCHIVE_DETAILS[file];
   const position=archiveYearCounts[y]=(archiveYearCounts[y]||0)+1;
   const id=`d${String(y).slice(-2)}-${String(position).padStart(2,'0')}`;
-  return {id,y,file,topic,issue:`works-${y}`,external:true,originalTitle:archiveEnglishOriginals.has(file)?enTitle:ruTitle,pdf:`${y}/${file}`,img:`img/prev/${id}.jpg`,authors:m.authors,np:m.np,pages:m.pages||null,doi:m.doi,cites:null,
+  return {id,y,file,topic,issue:`works-${y}`,external:true,originalTitle:archiveEnglishOriginals.has(file)?enTitle:ruTitle,pdf:`pdf/${y}/c${position}.pdf`,img:`img/prev/${id}.jpg`,authors:m.authors,np:m.np,pages:m.pages||null,doi:m.doi,cites:null,
     registration:m.registration,
     src:{ru:m.journal||'Выходные данные — в оригинальном PDF',en:m.journal||'Publication details are in the original PDF',jr:m.journal,je:m.journal,vol:m.volume,iss:m.number},
     ru:{t:ruTitle,a:m.ru,k:[TOPICS[topic].ru]},en:{t:enTitle,a:m.en,k:[TOPICS[topic].en]}};

@@ -17,9 +17,20 @@ class CatalogTests(unittest.TestCase):
             cwd=ROOT, check=True, capture_output=True, text=True, encoding="utf-8",
         )
         catalog = json.loads(result.stdout)
-        actual = {p.relative_to(ROOT).as_posix() for p in ROOT.glob("20*/*.pdf")}
+        actual = {p.relative_to(ROOT).as_posix() for p in ROOT.rglob("*.pdf")}
         self.assertEqual(set(catalog), actual)
         self.assertEqual(len(catalog), len(actual), "Duplicate PDF entries")
+        self.assertEqual(len(catalog), 55)
+        for path in catalog:
+            with self.subTest(path=path):
+                self.assertRegex(path, r"^pdf/202[1-6]/c[1-9][0-9]*\.pdf$")
+        for year, count in ((2021, 14), (2022, 5), (2023, 6),
+                            (2024, 12), (2025, 11), (2026, 7)):
+            with self.subTest(year=year):
+                self.assertEqual(
+                    {path for path in catalog if path.startswith(f"pdf/{year}/")},
+                    {f"pdf/{year}/c{number}.pdf" for number in range(1, count + 1)},
+                )
 
     def test_every_catalog_pdf_and_thumbnail_exists(self):
         # Read the real browser data without introducing a second catalog.
@@ -120,7 +131,7 @@ class BrowserTests(unittest.TestCase):
                     rows = self.page.locator("#issuePanel button.ip-row")
                     self.assertEqual(rows.count(), count)
                     rows.first.click()
-                    self.assertTrue(self.page.locator("#pdfOpen").get_attribute("href").startswith(f"{year}/"))
+                    self.assertTrue(self.page.locator("#pdfOpen").get_attribute("href").startswith(f"pdf/{year}/"))
                     self.assertTrue(self.page.locator("#pdfBody .pdf-authors").inner_text())
                     self.page.locator("#pdfClose").click()
 
@@ -147,7 +158,7 @@ class BrowserTests(unittest.TestCase):
         result = self.page.locator("#searchResults button.sr-item")
         self.assertEqual(result.count(), 1)
         result.click()
-        self.assertEqual(self.page.locator("#pdfOpen").get_attribute("href"), "2022/elibrary_49799003_88657662.pdf")
+        self.assertEqual(self.page.locator("#pdfOpen").get_attribute("href"), "pdf/2022/c4.pdf")
 
     def test_external_doi_citation_keeps_original_journal(self):
         citation = self.page.evaluate("apaCite(byId('d21-01'))")

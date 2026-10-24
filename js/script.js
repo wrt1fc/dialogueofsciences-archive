@@ -798,7 +798,7 @@ $('#searchOverlay').addEventListener('click',e=>{if(e.target.id==='searchOverlay
 $('#searchInput').addEventListener('input',e=>renderSearch(e.target.value.trim().toLowerCase()));
 function renderSearch(q){
   if(!q){$('#searchResults').innerHTML=`<div class="sr-empty">${t('srch.hint')}</div>`;return}
-  const hay=a=>[a.ru.t,a.en.t,a.authors.join(' '),a.authors.map(translit).join(' '),a.ru.k.join(' '),a.en.k.join(' '),a.pdf,String(isoIssue(a).y),a.doi?'doi '+a.doi:'',a.edn?'edn '+a.edn:'',TOPICS[a.topic].ru,TOPICS[a.topic].en].join(' ').toLowerCase();
+  const hay=a=>[a.ru.t,a.en.t,a.authors.join(' '),a.authors.map(translit).join(' '),a.ru.k.join(' '),a.en.k.join(' '),a.pdf,a.file||'',String(isoIssue(a).y),a.doi?'doi '+a.doi:'',a.edn?'edn '+a.edn:'',TOPICS[a.topic].ru,TOPICS[a.topic].en].join(' ').toLowerCase();
   const res=ARTICLES.filter(a=>hay(a).includes(q)).slice(0,8);
   $('#searchResults').innerHTML=res.length?res.map(a=>`
     <button class="sr-item" data-art="${a.id}" data-cursor="read">
