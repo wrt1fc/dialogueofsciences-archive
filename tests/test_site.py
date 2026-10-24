@@ -166,6 +166,19 @@ class BrowserTests(unittest.TestCase):
         self.assertIn("10.7752/jpes.2021.04240", citation)
         self.assertNotIn("Горизонты", citation)
 
+    def test_pdf_modal_authors_match_scanned_first_pages(self):
+        for article_id, path, expected, incorrect in (
+            ("d23-05", "pdf/2023/c5.pdf", "Шеина А. С.", "Ши Шуа"),
+            ("d23-06", "pdf/2023/c6.pdf", "Кондратьев П. А.", "Корольчев П. А."),
+        ):
+            with self.subTest(article=article_id):
+                self.page.evaluate("id => openPdf(byId(id))", article_id)
+                self.assertEqual(self.page.locator("#pdfOpen").get_attribute("href"), path)
+                authors = self.page.locator("#pdfBody .pdf-authors").inner_text()
+                self.assertIn(expected, authors)
+                self.assertNotIn(incorrect, authors)
+                self.page.locator("#pdfClose").click()
+
     def test_all_added_records_render_and_export_without_missing_metadata(self):
         problems = self.page.evaluate("""() => {
             const problems = [];
